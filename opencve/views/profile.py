@@ -221,7 +221,9 @@ def integrations():
     integrations, _, pagination = IntegrationController.list(
         {**request.args, "user_id": current_user.id}
     )
-    return render_template("profiles/integrations.html", integrations=integrations)
+    return render_template(
+        "profiles/integrations.html", integrations=integrations, pagination=pagination
+    )
 
 
 @main.route("/account/integrations/add", methods=["GET", "POST"])

@@ -57,8 +57,11 @@
                     {% endfor %}
                 </ul>
                 {% else %}
-                <p class="alert alert-info">No integration yet.</p>
+                <p>You have no integration yet.</p>
                 {% endif %}
+                <div class="center">
+                  {{ pagination.links }}
+                </div>
             </div>
         </div>
     </div>
