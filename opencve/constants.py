@@ -15,6 +15,7 @@ FREQUENCIES_TYPES = [
 ]
 
 # List of available integrations
+INTEGRATIONS_LIST = ["webhook", "email", "slack"]
 INTEGRATIONS_TYPES = [("webhook", "Webhook"), ("email", "Email"), ("slack", "Slack")]
 
 CVSS_SCORES = [

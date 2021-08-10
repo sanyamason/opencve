@@ -82,13 +82,13 @@ class MailNotificationsForm(FlaskForm):
 
 
 class FiltersNotificationForm(FlaskForm):
-    new_cve = BooleanField("New CVE")
-    references = BooleanField("Reference changed")
-    cvss = BooleanField("CVSS changed")
-    cpes = BooleanField("CPE changed")
-    summary = BooleanField("Summary changed")
-    cwes = BooleanField("CWE changed")
-    cvss_score = SelectField("CVSS score", coerce=int, choices=CVSS_SCORES)
+    new_cve = BooleanField("New CVE", default=False)
+    references = BooleanField("Reference changed", default=False)
+    cvss = BooleanField("CVSS changed", default=False)
+    cpes = BooleanField("CPE changed", default=False)
+    summary = BooleanField("Summary changed", default=False)
+    cwes = BooleanField("CWE changed", default=False)
+    cvss_score = SelectField("CVSS score", coerce=int, choices=CVSS_SCORES, default=0)
     submit = SubmitField("Save changes")
 
 

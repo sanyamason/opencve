@@ -22,6 +22,7 @@ from opencve.commands.utils import CveUtil
 from opencve.extensions import db
 from opencve.models.cve import Cve
 from opencve.models.cwe import Cwe
+from opencve.models.integrations import Integration
 from opencve.models.tags import UserTag
 from opencve.models.users import User
 from opencve.models.vendors import Vendor
@@ -204,6 +205,34 @@ def create_tag():
         return tag
 
     return _create_tag
+
+
+@pytest.fixture(scope="function")
+def create_integration():
+    def _create_integration(
+        name,
+        type="email",
+        configuration={},
+        alert_filters={"cvss": 0, "event_types": []},
+        enabled=True,
+        report=True,
+        username="user",
+    ):
+        user = User.query.filter_by(username=username).first()
+        integration = Integration(
+            name=name,
+            type=type,
+            configuration=configuration,
+            alert_filters=alert_filters,
+            enabled=enabled,
+            report=report,
+            user=user,
+        )
+        db.session.add(integration)
+        db.session.commit()
+        return integration
+
+    return _create_integration
 
 
 @pytest.fixture

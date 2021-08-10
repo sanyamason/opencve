@@ -254,13 +254,13 @@ def add_integration():
 
         # Extract alert filters
         filters = {
-            "event_types": [],
+            "event_types": [
+                t
+                for t in get_default_filters().get("event_types")
+                if getattr(form.alert_filters, t).data
+            ],
             "cvss": form.alert_filters.cvss_score.data,
         }
-
-        for typ in ["new_cve", "references", "cvss", "cpes", "cwes", "summary"]:
-            if getattr(form.alert_filters, typ).data:
-                filters["event_types"].append(typ)
 
         integration = Integration(
             user=current_user,
@@ -332,13 +332,13 @@ def edit_integration(name):
 
         # Extract alert filters
         filters = {
-            "event_types": [],
+            "event_types": [
+                t
+                for t in get_default_filters().get("event_types")
+                if getattr(form.alert_filters, t).data
+            ],
             "cvss": form.alert_filters.cvss_score.data,
         }
-
-        for typ in get_default_filters().get("event_types"):
-            if getattr(form.alert_filters, typ).data:
-                filters["event_types"].append(typ)
 
         integration.name = form.name.data
         integration.enabled = form.enabled.data
