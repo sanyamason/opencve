@@ -76,3 +76,19 @@ alerts_events = db.Table(
         "event_id", UUIDType(binary=False), db.ForeignKey("events.id"), primary_key=True
     ),
 )
+
+reports_changes = db.Table(
+    "reports_changes",
+    db.Column(
+        "report_id",
+        UUIDType(binary=False),
+        db.ForeignKey("reports.id"),
+        primary_key=True,
+    ),
+    db.Column(
+        "change_id",
+        UUIDType(binary=False),
+        db.ForeignKey("changes.id"),
+        primary_key=True,
+    ),
+)

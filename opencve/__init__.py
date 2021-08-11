@@ -76,6 +76,7 @@ import_submodules(
         "api",
         "checks",
         "controllers",
+        "integrations",
         "models",
         "tasks",
         "views",

@@ -1,3 +1,5 @@
+import importlib
+
 from sqlalchemy.schema import UniqueConstraint
 from sqlalchemy_utils import JSONType, UUIDType
 
@@ -15,6 +17,7 @@ class Integration(BaseModel):
     enabled = db.Column(db.Boolean, default=True)
     report = db.Column(db.Boolean, default=False)
     alert_filters = db.Column(JSONType, default=get_default_filters)
+    _integration = None
 
     # Relationships
     user_id = db.Column(UUIDType(binary=False), db.ForeignKey("users.id"))
@@ -26,3 +29,21 @@ class Integration(BaseModel):
 
     def __repr__(self):
         return "<Integration {}>".format(self.name)
+
+    @property
+    def integration(self):
+        if not self._integration:
+            self._integration = getattr(
+                importlib.import_module(f"opencve.integrations.{self.type}"),
+                f"{self.type.capitalize()}Integration",
+            )(self.configuration)
+        return self._integration
+
+    def test_integration(self):
+        return self.integration.test_integration()
+
+    def notify_changes(self, changes):
+        return self.integration.notify_changes(changes)
+
+    def send_report(self, report):
+        return self.integration.send_report(report)

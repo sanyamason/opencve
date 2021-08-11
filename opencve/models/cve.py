@@ -1,9 +1,12 @@
 from sqlalchemy.dialects.postgresql import JSONB
 from flask_user import current_user
 
+from opencve.constants import PRODUCT_SEPARATOR
 from opencve.extensions import db
 from opencve.models import BaseModel
+from opencve.models.products import Product
 from opencve.models.tags import CveTag, UserTag
+from opencve.models.vendors import Vendor
 
 
 class Cve(BaseModel):
@@ -96,3 +99,39 @@ class Cve(BaseModel):
         if self.cvss3:
             w += self.cvss3
         return w
+
+    @property
+    def suscribed_users(self):
+        """
+        Returns a list of users based on their vendors and products subscriptions.
+        """
+        users = {}
+
+        def _init_user(user):
+            if user in users.keys():
+                return
+            users[user] = {"products": [], "vendors": []}
+
+        for vendor in self.vendors:
+
+            # Product contains the separator
+            if PRODUCT_SEPARATOR in vendor:
+                vendor = Vendor.query.filter_by(
+                    name=vendor.split(PRODUCT_SEPARATOR)[0]
+                ).first()
+                product = Product.query.filter_by(
+                    name=vendor.split(PRODUCT_SEPARATOR)[1], vendor_id=vendor.id
+                ).first()
+
+                for user in product.users:
+                    _init_user(user)
+                    users[user]["products"].append(product.name)
+
+            # No separator means a vendor
+            else:
+                vendor = Vendor.query.filter_by(name=vendor).first()
+                for user in vendor.users:
+                    _init_user(user)
+                    users[user]["vendors"].append(vendor.name)
+
+            return users

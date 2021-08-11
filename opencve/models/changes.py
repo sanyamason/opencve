@@ -17,3 +17,4 @@ class Change(BaseModel):
     task = db.relationship("Task", back_populates="changes")
 
     events = db.relationship("Event", back_populates="change")
+    reviewed = db.Column(db.Boolean, nullable=False, default=False)

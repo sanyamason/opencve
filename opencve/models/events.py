@@ -10,7 +10,6 @@ class Event(BaseModel):
 
     type = db.Column(ChoiceType(EVENT_TYPES))
     details = db.Column(JSONType)
-    review = db.Column(db.Boolean, default=False)
 
     # Relationships
     cve_id = db.Column(UUIDType(binary=False), db.ForeignKey("cves.id"))

@@ -3,7 +3,7 @@ from flask_user import UserMixin
 from sqlalchemy.sql import expression
 from sqlalchemy_utils import ChoiceType, JSONType
 
-from opencve.constants import FREQUENCIES_TYPES
+from opencve.constants import FREQUENCIES_TYPES, PRODUCT_SEPARATOR
 from opencve.extensions import db
 from opencve.models import BaseModel, users_products, users_vendors
 
@@ -51,6 +51,17 @@ class User(BaseModel, UserMixin):
     tags = db.relationship("UserTag", back_populates="user")
     cve_tags = db.relationship("CveTag", back_populates="user")
     integrations = db.relationship("Integration", back_populates="user")
+
+    @property
+    def flat_vendors(self):
+        return [v.name for v in self.vendors]
+
+    @property
+    def flat_products(self):
+        data = []
+        for product in self.products:
+            data.append(f"{product.vendor.name}{PRODUCT_SEPARATOR}{product.name}")
+        return data
 
     @property
     def is_confirmed(self):
