@@ -23,7 +23,7 @@ Redis==3.3.11
 arrow==0.13.1
 celery==4.3.0
 cpe==1.2.1
-untangle==1.1.1
+untangle==1.2.1
 cssmin==0.2.0
 jsmin==2.2.2
 requests==2.23.0
@@ -40,3 +40,4 @@ jinja2==2.11.3
 # Required by WTForms (new bug?)
 # see: https://stackoverflow.com/questions/61356834/wtforms-install-email-validator-for-email-validation-support
 email_validator==1.1.0
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
