@@ -1,5 +1,5 @@
 # Flask core and extensions
-Flask==1.0.2
+Flask==2.2.5
 Flask-Admin==1.5.5
 Flask-Assets==0.12
 Flask-DebugToolbar==0.10.1
